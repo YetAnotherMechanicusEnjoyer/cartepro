@@ -64,8 +64,8 @@ export default function BalancePage() {
                     <span
                       className={
                         transaction.direction === "credit"
-                          ? "font-medium text-emerald-700 dark:text-emerald-400"
-                          : "font-medium text-red-600 dark:text-red-400"
+                          ? "font-medium text-positive"
+                          : "font-medium text-negative"
                       }
                     >
                       {transaction.amount}
