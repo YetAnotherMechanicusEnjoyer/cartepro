@@ -1,5 +1,8 @@
-import { Link } from "react-router-dom"
-import { Button } from "../components/ui/button"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { api } from "../api"
+import { isValidSiren } from "../lib/siren"
+import { Button } from "./ui/button"
 import {
   Card,
   CardContent,
@@ -12,6 +15,7 @@ import {
   Field,
   FieldContent,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldSet,
@@ -21,7 +25,62 @@ import {
 
 import { Input } from "../components/ui/input"
 
+type AuthResponse = {
+  id: string
+  mail: string
+  name: string
+}
+
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const navigate = useNavigate()
+  const [role, setRole] = useState<"employee" | "partner">("employee")
+  const [name, setName] = useState("")
+  const [mail, setMail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [siren, setSiren] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  const sirenInvalid = siren.length === 9 && !isValidSiren(siren)
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setError(null)
+
+    if (password !== confirmPassword) {
+      setError("Les mots de passe ne correspondent pas.")
+      return
+    }
+
+    if (role === "partner" && !isValidSiren(siren)) {
+      setError("Le SIREN saisi n'est pas valide.")
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      await api<AuthResponse>("/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mail,
+          name,
+          password,
+          role,
+          siren: role === "partner" ? siren : undefined,
+        }),
+      })
+
+      navigate("/login")
+    } catch {
+      setError("Impossible de créer le compte. Vérifiez vos informations.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <Card {...props}>
       <CardHeader>
@@ -31,7 +90,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <FieldGroup>
             <FieldSet>
               <FieldLegend variant="label">Vous êtes</FieldLegend>
@@ -47,6 +106,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                       name="role"
                       value="employee"
                       defaultChecked
+                      checked={role === "employee"}
+                      onChange={() => setRole("employee")}
                       required
                       className="size-4 accent-primary"
                     />
@@ -65,6 +126,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                       type="radio"
                       name="role"
                       value="partner"
+                      checked={role === "partner"}
+                      onChange={() => setRole("partner")}
                       required
                       className="size-4 accent-primary"
                     />
@@ -77,14 +140,23 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             </FieldSet>
             <Field>
               <FieldLabel htmlFor="name">Full Name</FieldLabel>
-              <Input id="name" type="text" placeholder="John Doe" required />
+              <Input
+                id="name"
+                type="text"
+                placeholder="John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
             </Field>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input
                 id="email"
                 type="email"
-                placeholder="m..example.com"
+                placeholder="m@example.com"
+                value={mail}
+                onChange={(e) => setMail(e.target.value)}
                 required
               />
               <FieldDescription>
@@ -94,7 +166,13 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             </Field>
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input id="password" type="password" required />
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
               <FieldDescription>
                 Must be at least 8 characters long.
               </FieldDescription>
@@ -103,12 +181,21 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               <FieldLabel htmlFor="confirm-password">
                 Confirm Password
               </FieldLabel>
-              <Input id="confirm-password" type="password" required />
+              <Input
+                id="confirm-password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
               <FieldDescription>Please confirm your password.</FieldDescription>
             </Field>
+            {error && <FieldError>{error}</FieldError>}
             <FieldGroup>
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Création…" : "Create Account"}
+                </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <Link to="/login" className="underline font-medium text-primary">

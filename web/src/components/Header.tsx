@@ -6,17 +6,17 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../components/ui/sheet";
+} from "./ui/sheet";
 
 export function Header() {
   return (
     <header className="border-b bg-background">
-      <div className="flex h-26 w-full items-center px-4 sm:px-6 lg:px-8">
+      <div className="flex h-20 w-full items-center px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <a className="block shrink-0 p-2" href="/">
             <img
-              src="/image.png"
-              alt="CartePro"
+              src="/favicon.png"
+              alt="Ticket Tout"
               className="h-15 w-15"
             />
           </a>

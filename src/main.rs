@@ -70,12 +70,6 @@ async fn main() -> Result<()> {
         .await
         .map_err(|e| anyhow::anyhow!("Error connecting to Database: {e}"))?;
 
-    let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
-    builder
-        .set_private_key_file("key.pem", SslFiletype::PEM)
-        .unwrap();
-    builder.set_certificate_chain_file("cert.pem").unwrap();
-
     let ssl =
         parse_args(&mut addr, &mut port).ok_or(anyhow::anyhow!("Error parsing arguments."))?;
 
@@ -90,6 +84,13 @@ async fn main() -> Result<()> {
     });
 
     let bind = if ssl {
+        // Le certificat n'est chargé que si --ssl est explicitement demandé,
+        // pour ne pas faire échouer le démarrage en dev (pas de key.pem/cert.pem).
+        let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
+        builder
+            .set_private_key_file("key.pem", SslFiletype::PEM)
+            .unwrap();
+        builder.set_certificate_chain_file("cert.pem").unwrap();
         server.bind_openssl((addr, port), builder)?
     } else {
         server.bind((addr, port))?
