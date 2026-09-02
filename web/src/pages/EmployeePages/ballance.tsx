@@ -4,9 +4,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Watermark } from "@/components/Watermark"
+} from "../../components/ui/card"
+import { Separator } from "../../components/ui/separator"
+import { Watermark } from "../../components/Watermark"
 
 // Placeholder — à remplacer par le solde réel une fois l'API branchée.
 const PLACEHOLDER_BALANCE = "128,50 €"
