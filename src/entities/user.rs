@@ -15,10 +15,9 @@ pub struct Model {
     pub role: Role,
     pub state: State,
 
-    pub siren: Option<String>,
+    pub siren: Option<i16>,
 
     pub created_at: i64,
-    pub siren: Option<i16>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
@@ -63,7 +62,6 @@ impl From<Model> for crate::models::User {
             state: model.state.into(),
             siren: model.siren,
             created_at: model.created_at as u64,
-            siren: model.siren,
         }
     }
 }
@@ -79,7 +77,6 @@ impl From<crate::models::User> for Model {
             state: user.state.into(),
             siren: user.siren,
             created_at: user.created_at as i64,
-            siren: user.siren,
         }
     }
 }
