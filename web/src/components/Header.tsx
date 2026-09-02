@@ -71,13 +71,11 @@ export function Header() {
 
           {/* Mobile menu */}
           <Sheet>
-            <SheetTrigger asChild>
-              <button
-                className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-muted text-muted-foreground transition hover:bg-muted/70 md:hidden"
-                aria-label="Ouvrir le menu"
-              >
-                <Menu className="h-6 w-6" />
-              </button>
+            <SheetTrigger
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-muted text-muted-foreground transition hover:bg-muted/70 md:hidden"
+              aria-label="Ouvrir le menu"
+            >
+              <Menu className="h-6 w-6" />
             </SheetTrigger>
 
             <SheetContent
