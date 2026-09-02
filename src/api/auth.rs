@@ -49,6 +49,39 @@ pub async fn login(
 }
 
 #[derive(Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum RegisterRole {
+    Employee,
+    Partner,
+}
+
+/// Un SIREN valide fait 9 chiffres et respecte la clé de Luhn (même algorithme
+/// que pour les numéros de carte bancaire) : on double un chiffre sur deux en
+/// partant de la droite, et la somme des chiffres doit être un multiple de 10.
+fn is_valid_siren(siren: &str) -> bool {
+    if siren.len() != 9 || !siren.chars().all(|c| c.is_ascii_digit()) {
+        return false;
+    }
+
+    let sum: u32 = siren
+        .chars()
+        .rev()
+        .enumerate()
+        .map(|(i, c)| {
+            let digit = c.to_digit(10).unwrap();
+            if i % 2 == 1 {
+                let doubled = digit * 2;
+                if doubled > 9 { doubled - 9 } else { doubled }
+            } else {
+                digit
+            }
+        })
+        .sum();
+
+    sum % 10 == 0
+}
+
+#[derive(Deserialize)]
 pub struct RegisterRequest {
     pub mail: String,
     pub name: String,
@@ -79,6 +112,19 @@ pub async fn register(
                 r
             }
         }
+        RegisterRole::Employee => crate::models::Role::Manant,
+        RegisterRole::Partner => crate::models::Role::Partner,
+    };
+
+    let siren = match body.role {
+        RegisterRole::Partner => {
+            let siren = body.siren.clone().unwrap_or_default();
+            if !is_valid_siren(&siren) {
+                return HttpResponse::BadRequest().body("Invalid SIREN.");
+            }
+            Some(siren)
+        }
+        RegisterRole::Employee => None,
     };
 
     let user = match crate::models::User::new(
@@ -87,6 +133,7 @@ pub async fn register(
         body.password.clone(),
         role,
         body.siren,
+        siren,
     ) {
         Ok(user) => user,
         Err(e) => {

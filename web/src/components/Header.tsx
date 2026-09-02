@@ -16,7 +16,7 @@ export function Header() {
           <a className="block shrink-0 p-2" href="/">
             <img
               src="/image.png"
-              alt="CartePro"
+              alt="Ticket Tout"
               className="h-15 w-15"
             />
           </a>
