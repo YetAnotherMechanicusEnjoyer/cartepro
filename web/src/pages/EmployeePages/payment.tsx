@@ -7,13 +7,13 @@ export default function EmployeePaymentPage() {
   const [url] = useState("http://10.10.255.154/quentin.png");
 
   return (
-    <Watermark text="SIMULATION PAYMENT">
+    <Watermark text="SIMULATION PAYMENT">  
       <div>
-        <Header />
-        <main>
-          <h1>Générateur QR Code</h1>
-          <QRCodeComponent value={url} size={300} />
-        </main>
+          <main className=" m-25 flex items-center justify-center">
+            <div className="p-4 bg-muted rounded-lg shadow-lg">
+              <QRCodeComponent value={url} size={300} />
+            </div>
+          </main>
       </div>
     </Watermark>
   );

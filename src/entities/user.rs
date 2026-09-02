@@ -15,8 +15,9 @@ pub struct Model {
     pub role: Role,
     pub state: State,
 
-    pub created_at: i64,
     pub siren: Option<i16>,
+
+    pub created_at: i64,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize)]
@@ -59,8 +60,8 @@ impl From<Model> for crate::models::User {
             password_hash: model.password_hash,
             role: model.role.into(),
             state: model.state.into(),
-            created_at: model.created_at as u64,
             siren: model.siren,
+            created_at: model.created_at as u64,
         }
     }
 }
@@ -74,8 +75,8 @@ impl From<crate::models::User> for Model {
             password_hash: user.password_hash,
             role: user.role.into(),
             state: user.state.into(),
-            created_at: user.created_at as i64,
             siren: user.siren,
+            created_at: user.created_at as i64,
         }
     }
 }

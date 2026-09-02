@@ -10,9 +10,11 @@ export function Watermark({
   text = "DOCUMENT DE SIMULATION - NE PAS UTILISER COMME OFFICIEL",
 }: WatermarkProps) {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
-      {}
-      <div className="bg-amber-500/90 text-amber-950 font-bold text-center text-xs md:text-sm py-1.5 px-4 shadow-sm sticky top-0 z-50 backdrop-blur-xs flex items-center justify-center gap-2 border-b border-amber-600/30">
+    <div className="relative w-full overflow-hidden">
+      <div
+        title={text}
+        className="bg-amber-500/90 text-amber-950 font-bold text-center text-xs md:text-sm py-1.5 px-4 shadow-xs flex items-center justify-center gap-2 border-b border-amber-600/30"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-4 w-4 shrink-0"
@@ -30,23 +32,7 @@ export function Watermark({
         <span>ENVIRONNEMENT DE SIMULATION — Les montants affichés n&apos;ont aucune valeur légale</span>
       </div>
 
-      {}
-      <div
-        className="pointer-events-none fixed inset-0 z-40 select-none overflow-hidden opacity-[0.06] flex flex-wrap items-center justify-around gap-16 p-8"
-        aria-hidden="true"
-      >
-        {Array.from({ length: 16 }).map((_, i) => (
-          <div
-            key={i}
-            className="-rotate-45 text-2xl md:text-4xl font-extrabold tracking-widest text-foreground uppercase whitespace-nowrap"
-          >
-            {text}
-          </div>
-        ))}
-      </div>
-
-      {}
-      <div className="relative z-0">{children}</div>
+      <div className="relative z-10 w-full">{children}</div>
     </div>
   )
 }

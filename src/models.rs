@@ -25,8 +25,8 @@ pub struct User {
     pub password_hash: String,
     pub role: Role,
     pub state: State,
-    pub created_at: u64,
     pub siren: Option<i16>,
+    pub created_at: u64,
 }
 
 impl User {
@@ -49,8 +49,8 @@ impl User {
             password_hash,
             role,
             state: State::WaitingActivation,
-            created_at,
             siren,
+            created_at,
         })
     }
 }
