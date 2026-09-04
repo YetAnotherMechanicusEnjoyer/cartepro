@@ -162,7 +162,7 @@ INSERT INTO state (id, state, reason, modified_at) VALUES
 ('11111111-1111-1111-1111-000000000047', 'validated', 'OK', 1770225590),
 ('11111111-1111-1111-1111-000000000048', 'validated', 'OK', 1776364233),
 ('11111111-1111-1111-1111-000000000049', 'validated', 'OK', 1750680138),
-('11111111-1111-1111-1111-000000000050', 'validated', 'OK', 1771764063)
+('11111111-1111-1111-1111-000000000050', 'validated', 'OK', 1771764063);
 
 --
 -- Partners
@@ -186,7 +186,7 @@ INSERT INTO users (id, mail, name, password, role, created_at) VALUES
 INSERT INTO partner (id, coordinate, siren, social_obj, highlight, highlight_text, verification, category) VALUES
 ('22222222-2222-2222-2222-000000000001', point(5.369642, 43.271903), 852681586, 'La Ferme du Coin (Marseille)', false, '', true, 'Alimentation'),
 ('22222222-2222-2222-2222-000000000002', point(-0.549993, 44.84127), 438151258, 'Le Comptoir Gourmand (Bordeaux)', true, '', true, 'Restauration'),
-('22222222-2222-2222-2222-000000000003', point(4.845035, 45.792323), 328612164, 'Le Petit Bouchon (Lyon)', true, true, '', 'Restauration'),
+('22222222-2222-2222-2222-000000000003', point(4.845035, 45.792323), 328612164, 'Le Petit Bouchon (Lyon)', true, '', true, 'Restauration'),
 ('22222222-2222-2222-2222-000000000004', point(2.354188, 48.859376), 704612520, 'Bistrot des Halles (Paris)', false, '', true, 'Restauration'),
 ('22222222-2222-2222-2222-000000000005', point(-0.56436, 44.820639), 384857208, 'Librairie des Arts (Bordeaux)', false, '', true, 'Culture & Loisirs'),
 ('22222222-2222-2222-2222-000000000006', point(2.354309, 48.869987), 396057712, 'Cine Lumiere (Paris)', false, '', false, 'Culture & Loisirs'),
@@ -232,8 +232,7 @@ INSERT INTO state (id, state, reason, modified_at) VALUES
 
 
 -- TRANSACTION
--- TRANSACTION
-INSERT INTO transaction (id, do_at, success, value, partner_id, employee_id) VALUES
+INSERT INTO transaction (id, timestamp, success, value, partner_id, employee_id) VALUES
 ('44444444-4444-4444-4444-000000000070', 1782318883, true, 72.95, '22222222-2222-2222-2222-000000000008', '11111111-1111-1111-1111-000000000010'),
 ('44444444-4444-4444-4444-000000000095', 1788520474, true, 71.18, '22222222-2222-2222-2222-000000000003', '11111111-1111-1111-1111-000000000017'),
 ('44444444-4444-4444-4444-000000000006', 1786879806, false, 22.12, '22222222-2222-2222-2222-000000000010', '11111111-1111-1111-1111-000000000014'),
