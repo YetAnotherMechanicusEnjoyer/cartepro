@@ -46,5 +46,8 @@ sea-orm = { version = "2.0.2", features = [
   "with-json",
 ] }
 
+# CSV
+csv = "1.4.0"
+
 # Error handling
 anyhow = "1.0.104"
